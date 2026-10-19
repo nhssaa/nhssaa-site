@@ -45,12 +45,16 @@
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
 })();
 
-/* NHSSAA mailing list -> Google Form (responses go to the Form's Sheet under admin@nhssaa.org) */
+/* NHSSAA mailing list -> /api/signup proxy (bot-guarded) -> Google Form Sheet under admin@nhssaa.org */
 (function(){
-  var URL='https://docs.google.com/forms/d/e/1FAIpQLSfFpvU1hkkkIh9RcYd5u2ePSVqHkevHL0NYLMNkcWaqLrW-JA/formResponse';
+  var T0=Date.now();
   function wire(form){
     if(form.__nhssaa) return; form.__nhssaa=true;
     var btn=form.querySelector('button');
+    var hp=document.createElement('input');
+    hp.type='text'; hp.name='company'; hp.tabIndex=-1; hp.setAttribute('autocomplete','off'); hp.setAttribute('aria-hidden','true');
+    hp.style.cssText='position:absolute;left:-9999px;top:-9999px;height:1px;width:1px;overflow:hidden;';
+    form.appendChild(hp);
     var note=document.createElement('p');
     note.setAttribute('role','status'); note.style.cssText='margin:8px 0;font-size:16px;';
     form.appendChild(note);
@@ -60,11 +64,17 @@
       var email=(em&&em.value||'').trim();
       if(!/^.+@.+\.[a-zA-Z]{2,63}$/.test(email)||!(fn&&fn.value.trim())||!(ln&&ln.value.trim())){note.textContent='Please enter your first name, last name and a valid email.';return;}
       var d=new URLSearchParams();
-      d.append('entry.175024750',fn.value.trim());d.append('entry.688089351',ln.value.trim());
-      d.append('entry.1034816932',email);d.append('entry.2081737754',ms?ms.value:'');
+      d.append('first',fn.value.trim());d.append('last',ln.value.trim());
+      d.append('email',email);d.append('message',ms?ms.value:'');
+      d.append('company',hp.value);d.append('t0',String(T0));
       if(btn) btn.disabled=true; note.textContent='Sending...';
-      fetch(URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:d.toString()})
-        .then(function(){note.textContent='Thank you! You have been added to the NHSSAA mailing list.';form.reset();if(btn)btn.disabled=false;})
+      fetch('/api/signup',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:d.toString()})
+        .then(function(r){return r.json();})
+        .then(function(j){
+          if(j&&j.ok){note.textContent='Thank you! You have been added to the NHSSAA mailing list.';form.reset();}
+          else{note.textContent='Sorry, something went wrong. Please email admin@nhssaa.org.';}
+          if(btn)btn.disabled=false;
+        })
         .catch(function(){note.textContent='Sorry, something went wrong. Please email admin@nhssaa.org.';if(btn)btn.disabled=false;});
     }
     form.addEventListener('submit',go,true);
