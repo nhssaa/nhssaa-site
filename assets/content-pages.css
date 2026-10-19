@@ -64,3 +64,5 @@ ul.tight li{margin:6px 0}
  .nx-page h1{font-size:32px}
  .nx-page .grid,.nx-page .grid.three,.nx-page .board-grid{grid-template-columns:1fr}
 }
+.nx-page .card.sponsor-slot{border:2px dashed #d9d9d9;background:#fafafa}
+.nx-page .card.sponsor-slot h3{color:#9a9a9a}
