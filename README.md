@@ -16,3 +16,6 @@ Local copies in `assets/media/` (original Wix filenames). To swap or add a photo
 - No student personal data (names beyond published chapter name+school, emails, phones).
 - New pages ship unlisted + noindex until Ash approves the copy.
 - Never change DNS or touch the live Wix site from this repo.
+
+## Bot protection (Oct 2026)
+All public forms route through serverless proxies (`/api/signup`, `/api/ask`) that enforce: Cloudflare Turnstile token verification (siteverify), honeypot field, 3s min fill time, disposable-domain denylist, per-IP 5/hr rate limit, and field validation. Turnstile site key is public in page source; the secret lives only in Vercel env `TURNSTILE_SECRET` (production). Cloudflare account: admin@nhssaa.org, free plan, TOTP 2FA (seed in vault, email MFA disabled).
