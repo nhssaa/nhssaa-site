@@ -1,0 +1,66 @@
+/* NHSSAA content pages: authored content inside the site chrome, using the home design tokens
+   (DIN Neuzeit Grotesk headings in brand orange, DIN Next/Open Sans body, steel-blue buttons) */
+#PAGES_CONTAINER{background:#fff}
+.nx-page{max-width:980px;margin:0 auto;padding:64px 20px 84px;font:normal normal normal 16px/1.55em din-next-w01-light,'open sans',Arial,sans-serif;color:#191919;-webkit-font-smoothing:antialiased}
+.nx-page h1{font:normal normal normal 44px/1.2em dinneuzeitgroteskltw01-_812426,'open sans',Arial,sans-serif;color:rgb(255,140,69);text-align:center;margin:0 0 16px;letter-spacing:.01em}
+.nx-page h2{font:normal normal normal 28px/1.3em dinneuzeitgroteskltw01-_812426,'open sans',Arial,sans-serif;color:rgb(255,140,69);margin:36px 0 10px}
+.nx-page h3{font:normal normal bold 18px/1.4em 'open sans',Arial,sans-serif;color:#191919;margin:0 0 6px}
+.nx-page p{margin:10px 0}
+.nx-page ul,.nx-page ol{margin:10px 0;padding-left:22px}
+.nx-page li{margin:6px 0}
+.nx-page a{color:rgb(70,130,180);text-decoration:none}
+.nx-page a:hover{text-decoration:underline}
+.nx-page section{margin:0 0 30px}
+.nx-page hr{border:0;border-top:1px solid #e3e3e3;margin:30px 0}
+.nx-page .nx-intro{text-align:center;max-width:760px;margin:0 auto 30px}
+.nx-page .nx-subnav{text-align:center;margin:6px 0 30px}
+.nx-page .nx-subnav a{display:inline-block;padding:8px 14px;font-size:14px;font-weight:700;color:rgb(70,130,180)}
+.nx-page .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin:18px 0}
+.nx-page .grid.three{grid-template-columns:repeat(3,1fr)}
+.nx-page .card{background:#fff;border:1px solid #e3e3e3;padding:22px}
+.nx-page .card p{font-size:15px;margin:10px 0}
+.nx-page .note{background:rgba(255,140,69,.09);border-left:3px solid rgb(255,140,69);padding:16px 20px;margin:18px 0}
+.nx-page .nx-footnote{font-size:13px;color:#737373;margin-top:30px}
+.nx-page .btn,.nx-page .big{display:inline-block;background:rgb(70,130,180);color:#fff!important;font:normal normal bold 14px/1.2 'open sans',Arial,sans-serif;padding:13px 26px;text-decoration:none!important;margin:10px 10px 10px 0;border:0;cursor:pointer}
+.nx-page .btn:hover,.nx-page .big:hover{background:rgb(58,109,153)}
+ol.steps{list-style:none;counter-reset:nxstep;padding:0;margin:16px 0;display:grid;gap:14px}
+ol.steps li{counter-increment:nxstep;background:#fff;border:1px solid #e3e3e3;padding:18px 20px 18px 64px;position:relative}
+ol.steps li::before{content:counter(nxstep);position:absolute;left:16px;top:16px;width:32px;height:32px;border-radius:50%;background:rgb(255,140,69);color:#fff;font:700 16px/32px 'open sans',Arial,sans-serif;text-align:center}
+ol.steps li b{display:block;margin-bottom:4px}
+ul.check{margin:12px 0;padding-left:22px}
+ul.check li{margin:8px 0}
+ul.tight{margin:8px 0;padding-left:20px}
+ul.tight li{margin:6px 0}
+.nx-page .video{position:relative;width:100%;max-width:960px;aspect-ratio:16/9;background:#111;overflow:hidden;margin:16px auto 0}
+.nx-page .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.nx-page .video .pending{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#cfd8dc;font-size:15px;text-align:center;padding:20px}
+.nx-page form{background:#fff;border:1px solid #e3e3e3;padding:24px;margin:16px 0}
+.nx-page form label{display:block;font:700 13px/1.4 'open sans',Arial,sans-serif;color:#404040;margin:14px 0 4px}
+.nx-page form input[type=text],.nx-page form input[type=email],.nx-page form input[type=url],.nx-page form textarea,.nx-page form select{width:100%;box-sizing:border-box;border:1px solid #c9c9c9;padding:10px 12px;font:16px/1.4 'open sans',Arial,sans-serif;color:#191919;background:#fff}
+.nx-page form input:focus,.nx-page form textarea:focus{outline:2px solid rgb(255,140,69);outline-offset:0;border-color:rgb(255,140,69)}
+.nx-page form button{display:inline-block;background:rgb(70,130,180);color:#fff;font:700 14px/1 'open sans',Arial,sans-serif;padding:13px 26px;border:0;cursor:pointer;margin-top:16px}
+.nx-page form button:hover{background:rgb(58,109,153)}
+.nx-page table{width:100%;border-collapse:collapse;background:#fff;margin:16px 0}
+.nx-page table th,.nx-page table td{text-align:left;padding:13px 16px;border-bottom:1px solid #e6e6e6;font-size:15px}
+.nx-page table th{background:#f5f5f5;font:700 13px/1.3 'open sans',Arial,sans-serif;letter-spacing:.05em;text-transform:uppercase;color:#525252}
+.nx-page details{background:#fff;border:1px solid #e3e3e3;padding:0;margin:0 0 12px}
+.nx-page summary{cursor:pointer;padding:18px 20px;font:700 17px/1.35 'open sans',Arial,sans-serif;color:#191919;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.nx-page summary::-webkit-details-marker{display:none}
+.nx-page summary::after{content:"+";font-size:24px;color:rgb(255,140,69);font-weight:400;flex-shrink:0}
+.nx-page details[open] summary::after{content:"\2013"}
+.nx-page details .a{padding:0 20px 18px;font-size:15px}
+.nx-page details .a p{margin:0 0 10px}
+.nx-page .board-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin:18px 0}
+.nx-page .board-grid .column{background:#f5f5f5;padding:18px;align-self:start}
+.nx-page .board-grid .column h2{font-size:20px;margin:0 0 14px}
+.nx-page .board-grid .card{margin-bottom:14px}
+.nx-page .board-grid .card:last-child{margin-bottom:0}
+.nx-page .board-grid .card a{display:block;font-weight:700;font-size:14px;padding:10px 0 0}
+.nx-page .date{font-size:13px;color:#737373;text-align:center}
+.nx-page .cal iframe{width:100%;height:420px;border:0}
+.nx-page iframe.nx-embed{width:100%;border:0}
+@media(max-width:760px){
+ .nx-page{padding:32px 20px 56px;max-width:none}
+ .nx-page h1{font-size:32px}
+ .nx-page .grid,.nx-page .grid.three,.nx-page .board-grid{grid-template-columns:1fr}
+}
