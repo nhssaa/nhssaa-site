@@ -57,11 +57,11 @@ module.exports = async (req, res) => {
   if (limited(ip)) { res.status(429).json({ ok: false, error: 'rate' }); return; }
 
   const fwd = new URLSearchParams();
-  fwd.append('entry.209127563', chapter);
-  fwd.append('entry.2073223059', topic);
-  fwd.append('entry.765746835', details);
-  if (name) fwd.append('entry.509379983', name);
-  if (email) fwd.append('entry.1842722286', email);
+  fwd.append('entry.839035218', chapter);
+  fwd.append('entry.1531819526', topic);
+  fwd.append('entry.912637495', details);
+  if (name) fwd.append('entry.1903968872', name);
+  if (email) fwd.append('entry.1879648433', email);
 
   try {
     const g = await fetch(GF, {
