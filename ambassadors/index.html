@@ -32,12 +32,18 @@
 <p><label for="ask-name">Your name (optional)</label><br><input id="ask-name" name="name" type="text" maxlength="200" style="width:100%;max-width:480px;padding:10px;border:1px solid #cdd7db;border-radius:6px;font:inherit"></p>
 <p><label for="ask-email">Email for follow-up (optional)</label><br><input id="ask-email" name="email" type="email" maxlength="250" style="width:100%;max-width:480px;padding:10px;border:1px solid #cdd7db;border-radius:6px;font:inherit"></p>
 <input type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;top:-9999px;height:1px;width:1px;overflow:hidden">
+<div id="ask-ts" style="margin:10px 0"></div>
 <p><button type="submit" class="btn" style="background:#974521;color:#fff;border:0;border-radius:6px;padding:12px 22px;font:inherit;cursor:pointer">Send to the team</button> <span id="ask-note" role="status" style="margin-left:10px"></span></p>
 </form></section>
 <section id="join"><h2>Not an ambassador yet?</h2><p>Tell us about yourself and we will set you up.</p><p><a class="btn" href="https://docs.google.com/forms/d/1jnvq-CPI1aj3m7MM5UCnQ27kPz8WJQnp1XAGnyOTlVI/viewform" target="_blank" rel="noopener">Apply to be an ambassador &rarr;</a></p></section>
 </main><script>
+window.__nhssaaTSQueue=window.__nhssaaTSQueue||[];
+window.__nhssaaTS=function(){while(window.__nhssaaTSQueue.length){var q=window.__nhssaaTSQueue.shift();q.wid=turnstile.render(q.el,{sitekey:q.key});}};
 (function(){
 var T0=Date.now();
+var tsq={el:document.getElementById('ask-ts'),key:'0x4AAAAAAFbAML3b8ZAWbOSA',wid:null};
+window.__nhssaaTSQueue.push(tsq);
+var t=document.createElement('script');t.src='https://challenges.cloudflare.com/turnstile/v0/api.js?onload=__nhssaaTS&render=explicit';t.async=true;t.defer=true;document.head.appendChild(t);
 var f=document.getElementById('askform');
 if(!f)return;
 f.addEventListener('submit',function(e){
@@ -49,12 +55,17 @@ if(!d.get('chapter').trim()||!d.get('topic')||!d.get('details').trim()){note.tex
 var em=(d.get('email')||'').trim();
 if(em&&!/^.+@.+\.[a-zA-Z]{2,63}$/.test(em)){note.textContent='That email does not look right.';return;}
 d.append('t0',String(T0));
+var tst=document.querySelector('#ask-ts [name=cf-turnstile-response]');
+var tsv=tst&&tst.value?tst.value:'';
+if(!tsv){note.textContent='Please complete the security check.';return;}
+d.append('cf-turnstile-response',tsv);
 btn.disabled=true;note.textContent='Sending...';
 fetch('/api/ask',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:d.toString()})
 .then(function(r){return r.json();})
 .then(function(j){
 if(j&&j.ok){note.textContent='Sent. We answer by email.';f.reset();}
 else{note.textContent='Sorry, something went wrong. Email info@nhssaa.org instead.';}
+if(tsq.wid!==null&&window.turnstile){turnstile.reset(tsq.wid);}
 btn.disabled=false;})
 .catch(function(){note.textContent='Sorry, something went wrong. Email info@nhssaa.org instead.';btn.disabled=false;});
 });

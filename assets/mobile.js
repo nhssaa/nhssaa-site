@@ -1,4 +1,8 @@
 (function(){
+window.__nhssaaTSQueue=window.__nhssaaTSQueue||[];
+window.__nhssaaTS=function(){while(window.__nhssaaTSQueue.length){var q=window.__nhssaaTSQueue.shift();q.wid=turnstile.render(q.el,{sitekey:q.key});}};
+(function(){var t=document.createElement('script');t.src='https://challenges.cloudflare.com/turnstile/v0/api.js?onload=__nhssaaTS&render=explicit';t.async=true;t.defer=true;document.head.appendChild(t);})();
+
  if(!matchMedia('(max-width: 760px)').matches)return;
  var main=document.querySelector('main');if(!main)return;
  var root=document.createElement('div');root.id='nhssaa-mobile';
@@ -21,7 +25,8 @@
  if(wform&&!content.querySelector('form.mobile-signup')){
   var mh=document.createElement('h2');mh.textContent='Join our mailing list for information, updates & more!';content.appendChild(mh);
   var mf=document.createElement('form');mf.className='mobile-signup';mf.setAttribute('aria-label','Join the NHSSAA mailing list');
-  mf.innerHTML='<label>First name<input name="first-name" autocomplete="given-name" required></label><label>Last name<input name="last-name" autocomplete="family-name" required></label><label>Email<input name="email" type="email" autocomplete="email" required></label><label>Message (optional)<textarea name="message"></textarea></label><input type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;top:-9999px;height:1px;width:1px;overflow:hidden"><button type="submit">JOIN NOW</button><p class="signup-note" role="status"></p>';
+  var mts=document.createElement('div');content.appendChild(mts);var mtsq={el:mts,key:'0x4AAAAAAFbAML3b8ZAWbOSA',wid:null};window.__nhssaaTSQueue.push(mtsq);if(window.turnstile){window.__nhssaaTS();}
+ mf.innerHTML='<label>First name<input name="first-name" autocomplete="given-name" required></label><label>Last name<input name="last-name" autocomplete="family-name" required></label><label>Email<input name="email" type="email" autocomplete="email" required></label><label>Message (optional)<textarea name="message"></textarea></label><input type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;top:-9999px;height:1px;width:1px;overflow:hidden"><button type="submit">JOIN NOW</button><p class="signup-note" role="status"></p>';
   content.appendChild(mf);
  }
  var T0=Date.now();
@@ -32,10 +37,10 @@
    var fn=f.querySelector('[name=first-name]').value.trim(),ln=f.querySelector('[name=last-name]').value.trim(),em=f.querySelector('[name=email]').value.trim(),ms=f.querySelector('[name=message]').value;
    if(!fn||!ln||!/^.+@.+\.[a-zA-Z]{2,63}$/.test(em)){note.textContent='Please enter your first name, last name and a valid email.';return;}
    var d=new URLSearchParams();
-   d.append('first',fn);d.append('last',ln);d.append('email',em);d.append('message',ms);d.append('company',f.querySelector('[name=company]').value);d.append('t0',String(T0));
+   d.append('first',fn);d.append('last',ln);d.append('email',em);d.append('message',ms);d.append('company',f.querySelector('[name=company]').value);d.append('t0',String(T0));var tst=document.querySelector('.mobile-signup [name=cf-turnstile-response]')||document.querySelector('[name=cf-turnstile-response]');var tsv=tst&&tst.value?tst.value:'';if(!tsv){note.textContent='Please complete the security check.';return;}d.append('cf-turnstile-response',tsv);
    btn.disabled=true;note.textContent='Sending...';
    fetch('/api/signup',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:d.toString()})
-    .then(function(r){return r.json();}).then(function(j){if(j&&j.ok){note.textContent='Thank you! You have been added to the NHSSAA mailing list.';f.reset();}else{note.textContent='Sorry, something went wrong. Please email admin@nhssaa.org.';}btn.disabled=false;})
+    .then(function(r){return r.json();}).then(function(j){if(j&&j.ok){note.textContent='Thank you! You have been added to the NHSSAA mailing list.';f.reset();}else{note.textContent='Sorry, something went wrong. Please email admin@nhssaa.org.';}if(mtsq.wid!==null&&window.turnstile){turnstile.reset(mtsq.wid);}btn.disabled=false;})
     .catch(function(){note.textContent='Sorry, something went wrong. Please email admin@nhssaa.org.';btn.disabled=false;});
   });
  });var foot=document.createElement('footer');foot.textContent='©2025 by National High School Sports Analytics Association, Inc. Contact us at info@nhssaa.org';root.appendChild(foot);

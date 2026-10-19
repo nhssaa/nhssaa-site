@@ -45,6 +45,10 @@
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
 })();
 
+/* Cloudflare Turnstile loader (explicit render, shared) */
+window.__nhssaaTSQueue=window.__nhssaaTSQueue||[];
+window.__nhssaaTS=function(){while(window.__nhssaaTSQueue.length){var q=window.__nhssaaTSQueue.shift();q.wid=turnstile.render(q.el,{sitekey:q.key});}};
+(function(){var t=document.createElement('script');t.src='https://challenges.cloudflare.com/turnstile/v0/api.js?onload=__nhssaaTS&render=explicit';t.async=true;t.defer=true;document.head.appendChild(t);})();
 /* NHSSAA mailing list -> /api/signup proxy (bot-guarded) -> Google Form Sheet under admin@nhssaa.org */
 (function(){
   var T0=Date.now();
@@ -55,6 +59,9 @@
     hp.type='text'; hp.name='company'; hp.tabIndex=-1; hp.setAttribute('autocomplete','off'); hp.setAttribute('aria-hidden','true');
     hp.style.cssText='position:absolute;left:-9999px;top:-9999px;height:1px;width:1px;overflow:hidden;';
     form.appendChild(hp);
+    var ts=document.createElement('div'); form.appendChild(ts);
+    var tsq={el:ts,key:'0x4AAAAAAFbAML3b8ZAWbOSA',wid:null}; window.__nhssaaTSQueue.push(tsq);
+    if(window.turnstile){window.__nhssaaTS();}
     var note=document.createElement('p');
     note.setAttribute('role','status'); note.style.cssText='margin:8px 0;font-size:16px;';
     form.appendChild(note);
@@ -67,12 +74,17 @@
       d.append('first',fn.value.trim());d.append('last',ln.value.trim());
       d.append('email',email);d.append('message',ms?ms.value:'');
       d.append('company',hp.value);d.append('t0',String(T0));
+      var tst=form.querySelector('[name="cf-turnstile-response"]');
+      var tsv=tst&&tst.value?tst.value:'';
+      if(!tsv){note.textContent='Please complete the security check.';return;}
+      d.append('cf-turnstile-response',tsv);
       if(btn) btn.disabled=true; note.textContent='Sending...';
       fetch('/api/signup',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:d.toString()})
         .then(function(r){return r.json();})
         .then(function(j){
           if(j&&j.ok){note.textContent='Thank you! You have been added to the NHSSAA mailing list.';form.reset();}
           else{note.textContent='Sorry, something went wrong. Please email admin@nhssaa.org.';}
+          if(tsq.wid!==null&&window.turnstile){turnstile.reset(tsq.wid);}
           if(btn)btn.disabled=false;
         })
         .catch(function(){note.textContent='Sorry, something went wrong. Please email admin@nhssaa.org.';if(btn)btn.disabled=false;});

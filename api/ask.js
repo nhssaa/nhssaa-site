@@ -54,6 +54,19 @@ module.exports = async (req, res) => {
   if (!chapter || !TOPICS.has(topic) || !details) { res.status(400).json({ ok: false, error: 'fields' }); return; }
   if (email && !/^.+@.+\.[a-zA-Z]{2,63}$/.test(email)) { res.status(400).json({ ok: false, error: 'fields' }); return; }
 
+
+  // Cloudflare Turnstile verification
+  const tsToken = params.get('cf-turnstile-response') || '';
+  if (!tsToken) { res.status(400).json({ ok: false, error: 'captcha' }); return; }
+  try {
+    const vr = await (await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ secret: process.env.TURNSTILE_SECRET || '', response: tsToken, remoteip: ip }).toString()
+    })).json();
+    if (!vr.success) { res.status(403).json({ ok: false, error: 'captcha' }); return; }
+  } catch (e) { res.status(502).json({ ok: false, error: 'captcha' }); return; }
+
   if (limited(ip)) { res.status(429).json({ ok: false, error: 'rate' }); return; }
 
   const fwd = new URLSearchParams();
